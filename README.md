@@ -19,7 +19,7 @@ AWS Firewallregeln
 Bei Amazon Lightsail ist per Klick im Browser eine Verbindung zum Server möglich. Der SSH-Port 22 und TCP-Port 80 werden deshalb in unserem Projekt nicht benötigt und könnten aus Sicherheitsgründen geschlossen werden. Ich lasse sie aber erstmal offen. (Um ein sichereres Netzwerk zu schaffen, solltest du z.B. alle Ports schließen, wenn du mit der Einrichtung fertig bist. Du solltest WireGuard auch noch eine Verschlüsselung hinzufügen. Das lasse ich hier im Beispiel weg.)
 Um eine Verbindung zum Server im Terminal per SSH aufzubauen ist ein Schlüsselaustausch notwendig. Dazu muss ein privater Schlüssel erzeugt und runtergeladen und gespeichert werden. Das geht alles automatisch per Klick über das aws-Portal. Mein Schlüssel wurde als **.pem-Datei** (LightsailDefaultKey-eu-central-1.pem) geliefert.  
 
-Der ssh-Aufruf vom Windows-PC lautet dann so:  
+Der ssh-Aufruf vom Windows-PC lautet dann z.B. so:  
 `ssh -i C:\Users\toral\Documents\FamilienVPN\LightsailDefaultKey-eu-central-1.pem ubuntu@xxx.xxx.xxx.xxx`  
 Hinter ssh -i steht der Pfad zur Schlüsseldatei incl. der .pem-Datei, danach folgt der Nutzername@ und die öffentliche IP-Adresse unseres neuen Servers.  
 Damit bist du per SSH auf dem Server.  
