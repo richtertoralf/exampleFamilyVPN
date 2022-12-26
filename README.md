@@ -200,8 +200,8 @@ Der VPN-Admin lädt zuerst alle .conf-Dateien und .png-Dateien (QR-Codes) vom Se
 sudo su    
 mkdir /etc/wireguard_sources  
 cd /etc/wireguard_sources  
-git clone https://github.com/snowgames95/familyVPN  
-cd familyVPN  
+git clone https://github.com/richtertoralf/exampleFamilyVPN  
+cd exampleFamilyVPN  
 # Installationsscript ausführbar machen
 chmod +x /etc/wireguard_sources/familyVPN/familyVPNinstall.sh  
 # Script starten
