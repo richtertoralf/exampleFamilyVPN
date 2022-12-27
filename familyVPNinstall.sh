@@ -3,18 +3,20 @@
 # 
 # familyVPNinstall.sh
 #
-# Skript zur Installation eines FamilyVPN
+# Skript zur Installation eines WireGuard-VPN
 # Installation auf einem Server mit einer öffentlichen IP-Adresse
-# Server-OS: Ubuntu 20.04 LTS
+# Server-OS: Ubuntu 22.04 LTS by Hetzner
 #
 # Konfiguration:
 VPNserverPort="51820"
 DNSserverIP="1.1.1.1"
-VPNaddresses="10.102.102.0/24"
-maxClients=22
+VPNaddresses="192.168.203.0/24"
+VPNserverAddress="192.168.203.1/24"
+maxClients=90
 VPNaddressClientStart=101 
 highIP=254
-# Name der Netzwerkkarte ermitteln, z.B. so: 'ls -l /sys/class/net'
+# Name der Netzwerkkarte ermitteln, z.B. so: 'ls /sys/class/net'
+# oder so: inetName=$(ip -o -4 route show to default | awk '{print $5}')
 inetName="eth0"
 
 # Start der automatischen Konfiguration
@@ -28,7 +30,8 @@ if  [ $(( $maxClients + $VPNaddressClientStart )) -gt $highIP ]
 fi
 
 # ermitteln der öffentlichen IP des Servers
-VPNserverIP=$(wget -O - -q icanhazip.com)
+# VPNserverIP=$(wget -O - -q icanhazip.com)
+VPNserverIP=$(hostname -I | awk '{print $1}')
 echo "Ich installiere WireGuard auf dem Server mit der IP "$VPNserverIP
 
 # Installation
@@ -42,8 +45,7 @@ echo Die Installation ist abgeschlossen.
 echo "Im nächsten Schritt werden die Schlüsselpaare erzeugt."
 echo "Für wieviele Clients sollen Konfigurationsdateien und QR-Codes erzeugt werden?"
 ex='false'
-while [ $ex == 'false' ]
-do
+while [ "$ex" == false ]; do
   echo "Gibt die Anzahl ein (zwischen 0 und $maxClients ) und bestätige mit [ENTER]: "
   read anzahlClients
   #prüfen ob $anzahlClients eine ganze Zahl ist
@@ -97,18 +99,17 @@ EOF
 else
   echo "Es wurden keine Keys und .conf-Dateien für Clients erstellt."
 fi
-
 # WireGuard-Schnittstelle erzeugen
 echo "... wg0.conf wird erstellt"
 cat <<EOF > /etc/wireguard/wg0.conf
 #Server
 [Interface]  
 PrivateKey = $(cat /etc/wireguard/keys/server_private_key)  
-Address = $VPNaddresses
+Address = $VPNserverAddress
 ListenPort = $VPNserverPort
 PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o ${inetName} -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o ${inetName} -j MASQUERADE; iptables -t nat -A POSTROUTING -s ${VPNaddresses} -o ${inetName} -j MASQUERADE  
 PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o ${inetName} -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o ${inetName} -j MASQUERADE; iptables -t nat -D POSTROUTING -s ${VPNaddresses} -o ${inetName} -j MASQUERADE  
-SaveConfig = true 
+# SaveConfig = true 
 EOF
 
 # Peers in wg0.conf eintragen
