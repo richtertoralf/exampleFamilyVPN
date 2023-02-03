@@ -197,12 +197,13 @@ Der VPN-Admin lädt zuerst alle .conf-Dateien und .png-Dateien (QR-Codes) vom Se
 - Firewall für WireGuard öffnen: Port 51820  
 - peer SSH einwählen
 ```
-sudo su    
+sudo su  
+apt install git
 mkdir /etc/wireguard_sources  
 cd /etc/wireguard_sources  
 git clone https://github.com/richtertoralf/exampleFamilyVPN  
 cd exampleFamilyVPN  
 # Installationsscript ausführbar machen
-chmod +x /etc/wireguard_sources/familyVPN/familyVPNinstall.sh  
+chmod +x /etc/wireguard_sources/exampleFamilyVPN/familyVPNinstall.sh  
 # Script starten
 ./familyVPNinstall.sh
