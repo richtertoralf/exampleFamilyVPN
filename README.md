@@ -208,3 +208,7 @@ chmod +x /etc/wireguard_sources/exampleFamilyVPN/familyVPNinstall.sh
 # Script starten
 ./familyVPNinstall.sh
 ```
+und abschließend vom lokalen PC aus die neu angelegten Konfigurationsdateien vom Server runterkopieren und im aktuelle Verzeichnis abspeichern:
+```
+scp ssh root@xxx.xxx.xxx.xxx:/etc/wireguard/clients/client*.* .
+```
