@@ -194,7 +194,7 @@ Der VPN-Admin lädt zuerst alle .conf-Dateien und .png-Dateien (QR-Codes) vom Se
 
 ## automatische Konfiguration: ##
 - neuen Server aufsetzen  
-- Firewall für WireGuard öffnen: Port 51820  
+- Firewall für WireGuard öffnen: Port 51820 / UDP  
 - peer SSH einwählen
 ```
 sudo su  
@@ -207,3 +207,4 @@ cd exampleFamilyVPN
 chmod +x /etc/wireguard_sources/exampleFamilyVPN/familyVPNinstall.sh  
 # Script starten
 ./familyVPNinstall.sh
+```
